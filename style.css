@@ -11,7 +11,7 @@ background-color: #E6E6E6;
 }
 
 .bg{
-    background-image: url(bg.jpg);
+    background-image: url(sources/bg.jpg);
 	background-repeat: no-repeat;
 	background-position: center;
     width: 780px;
