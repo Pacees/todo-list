@@ -99,6 +99,8 @@ background-color: #E6E6E6;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
+
+    transition: 0.2s;
 }
 
 .todo-buttons button{
@@ -109,9 +111,11 @@ background-color: #E6E6E6;
     cursor: pointer;
     position: relative;
     bottom: 3px;
+
+    transition: 0.4s;
 }
 
-.edit-button i {
+.edit-button i , .delete-button i {
     font-size: 14px;
 }
 
@@ -136,4 +140,13 @@ background-color: #E6E6E6;
 
 .creator a:hover{
     opacity: 0.5;
+}
+
+.completed input{
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.completed .complete-button , .completed .edit-button{
+    display: none;
 }
