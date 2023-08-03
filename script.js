@@ -1,26 +1,18 @@
 // choosing elements
-
-const headerEditor = document.querySelector(".editor");
 const todoForm = document.querySelector("#todo-form");
 const todoInput = document.querySelector("#new-todo");
-const submitButton = document.querySelector("#submit-button");
 const clearButton = document.querySelector("#clear-all");
 const todoList = document.querySelector(".list");
-const body = document.querySelector(".body");
-const editButtons = document.querySelectorAll(".edit-button");
-
-
 
 // Event Listeners
 todoForm.addEventListener("submit" , addTodo);
-document.addEventListener("DOMContentLoaded" , bringFromStorage);
 clearButton.addEventListener("click",clearAll)
-document.addEventListener("DOMContentLoaded" , bringCompleteds)
 todoList.addEventListener("click" , clickTodoList)
+document.addEventListener("DOMContentLoaded", pageLoaded);
 
 // Functions
 
-function clickTodoList(e){ // All click functions
+function clickTodoList(e){ // All todoList click functions
 
     // Updating Todo updateForm
     if(e.target.className == "todo-text"){
@@ -70,34 +62,6 @@ function clickTodoList(e){ // All click functions
         }
 };
 
-function deleteCompleted(inputValue , li){
-
-    if(li.className == "list-item completed"){
-        const completedTodos = JSON.parse(localStorage.getItem("completedTodos"));
-        const index = completedTodos.indexOf(inputValue);
-
-        completedTodos.splice(index , 1);
-        localStorage.setItem("completedTodos" , JSON.stringify(completedTodos));
-    }
-}
-
-
-function bringCompleteds(){
-    if(localStorage.getItem("completedTodos") != null){
-        const completedTodos = JSON.parse(localStorage.getItem("completedTodos"));
-        
-        completedTodos.forEach(function(completed){
-            const todos = document.querySelectorAll(".todo-text");
-            
-            todos.forEach(function(todo){
-                if(todo.value == completed){
-                    todo.parentElement.className = "list-item completed";
-                }
-            })
-        })
-    }
-}
-
 function completeStorage(todo){
     let completedTodos;
 
@@ -110,6 +74,17 @@ function completeStorage(todo){
     completedTodos.push(todo);
 
     localStorage.setItem("completedTodos" , JSON.stringify(completedTodos));
+}
+
+function deleteCompleted(inputValue , li){
+
+    if(li.className == "list-item completed"){
+        const completedTodos = JSON.parse(localStorage.getItem("completedTodos"));
+        const index = completedTodos.indexOf(inputValue);
+
+        completedTodos.splice(index , 1);
+        localStorage.setItem("completedTodos" , JSON.stringify(completedTodos));
+    }
 }
 
 function addTodo(e){
@@ -175,11 +150,37 @@ function addToStorage(text){
     localStorage.setItem("todos", JSON.stringify(todos));
 };
 
-function bringFromStorage(e){
+function pageLoaded(){
+
+    //Bring todos from storage
     if(localStorage.getItem("todos") != null){
         const storedTodos = JSON.parse(localStorage.getItem("todos"));
         storedTodos.forEach(function(todo){
             addToUI(todo);
+        })
+    }
+
+    // Bring completed todos from storage
+    if(localStorage.getItem("completedTodos") != null){
+        const completedTodos = JSON.parse(localStorage.getItem("completedTodos"));
+        
+        completedTodos.forEach(function(completed){
+            const todos = document.querySelectorAll(".todo-text");
+            
+            todos.forEach(function(todo){
+                if(todo.value == completed){
+                    todo.parentElement.className = "list-item completed";
+                }
+            })
+        })
+    }
+
+    // Adding "disabled" attribute to completed todos' input
+    const completedListItems = document.querySelectorAll(".completed");
+
+    if (completedListItems.length != 0){
+        completedListItems.forEach(function(listItem){
+            listItem.firstChild.setAttribute("disabled" , "");
         })
     }
 }
